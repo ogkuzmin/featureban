@@ -9,8 +9,8 @@ class CardTests {
 
     @Test
     fun shouldReturnTrue_forPlayerThatMatchesToCardOwner_whenCheckOwner() {
-        var card = Card()
-        var player = Player()
+        val card = Card()
+        val player = Player()
         card.owner = player
 
         assertTrue(card.isOwnedBy(player))
@@ -18,12 +18,19 @@ class CardTests {
 
     @Test
     fun shouldReturnFalse_forPlayerThatDoesNotMatchToCardOwner_whenCheckOwner() {
-        var card = Card()
-        var firstPlayer = Player()
-        var secondPlayer = Player()
+        val card = Card()
+        val firstPlayer = Player()
+        val secondPlayer = Player()
         card.owner = firstPlayer
 
         assertFalse(card.isOwnedBy(secondPlayer))
-     }
+    }
 
+    @Test
+    fun shouldReturnFalse_forAnyPlayerAndCardWithoutOwner_whenCheckOwner() {
+        val card = Card()
+        val player = Player()
+
+        assertFalse(card.isOwnedBy(player))
+    }
 }
