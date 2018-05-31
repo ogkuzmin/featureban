@@ -1,6 +1,7 @@
 package domain.dsl
 
 import domain.Card
+import domain.Column
 import domain.Player
 
 class Create {
@@ -13,6 +14,10 @@ class Create {
 
         fun player(): PlayerBuilder {
             return PlayerBuilder()
+        }
+
+        fun column(): ColumnBuilder {
+            return ColumnBuilder()
         }
     }
 }
@@ -37,5 +42,19 @@ class PlayerBuilder {
 
     fun please(): Player {
         return player
+    }
+}
+
+class ColumnBuilder {
+
+    private val column = Column()
+
+    fun withCard(card: Card): ColumnBuilder {
+        column.set(card)
+        return this
+    }
+
+    fun please(): Column {
+        return column
     }
 }
