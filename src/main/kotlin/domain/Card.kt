@@ -6,6 +6,6 @@ class Card {
     var isBlocked: Boolean = false
 
     fun isOwnedBy(player: Player): Boolean {
-        return true
+        return owner == player
     }
 }

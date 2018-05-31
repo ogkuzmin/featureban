@@ -1,5 +1,6 @@
 package domain
 
+import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
 import org.junit.Test
 
@@ -14,5 +15,15 @@ class CardTests {
 
         assertTrue(card.isOwnedBy(player))
     }
+
+    @Test
+    fun shouldReturnFalse_forPlayerThatDoesNotMatchToCardOwner_whenCheckOwner() {
+        var card = Card()
+        var firstPlayer = Player()
+        var secondPlayer = Player()
+        card.owner = firstPlayer
+
+        assertFalse(card.isOwnedBy(secondPlayer))
+     }
 
 }
