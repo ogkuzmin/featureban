@@ -50,7 +50,7 @@ class ColumnBuilder {
     private val column = Column()
 
     fun withCard(card: Card): ColumnBuilder {
-        column.set(card)
+        column.add(card)
         return this
     }
 

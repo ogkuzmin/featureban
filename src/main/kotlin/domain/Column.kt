@@ -4,7 +4,7 @@ class Column {
 
     private val cards: MutableList<Card> = ArrayList()
 
-    fun set(card: Card) {
+    fun add(card: Card) {
         cards.add(card)
     }
 
@@ -16,5 +16,9 @@ class Column {
         }
 
         return false
+    }
+
+    fun getCards(): List<Card> {
+        return cards
     }
 }
