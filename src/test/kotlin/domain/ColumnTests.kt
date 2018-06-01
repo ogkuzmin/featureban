@@ -77,4 +77,17 @@ class ColumnTests {
 
         assertEquals(column.cards(), listOf(firstCard, secondCard, thirdCard))
     }
+
+    @Test
+    fun shouldReturnTrue_afterCardWasMovedToVerification_whenCheckVerificationColumnForContainingThisCard() {
+        val board = Create
+                .board()
+                .withTodoCapacity(10)
+                .please()
+        val card = board.moveToProgress()
+
+        board.moveToVerification(card!!)
+
+        assertTrue(board.verificationColumn.cards().contains(card))
+    }
 }

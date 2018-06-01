@@ -31,4 +31,8 @@ class Board private constructor() {
 
         return card
     }
+
+    fun moveToVerification(card: Card) {
+        verificationColumn.add(card)
+    }
 }
