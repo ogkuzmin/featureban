@@ -90,4 +90,17 @@ class ColumnTests {
 
         assertTrue(board.verificationColumn.cards().contains(card))
     }
+
+    @Test
+    fun shouldReturnFalse_afterCardWasMovedToVerification_whenCheckInProgressColumnForContainingThisCard() {
+        val board = Create
+                .board()
+                .withTodoCapacity(10)
+                .please()
+        val card = board.moveToProgress()
+
+        board.moveToVerification(card!!)
+
+        assertFalse(board.inProgressColumn.cards().contains(card))
+    }
 }

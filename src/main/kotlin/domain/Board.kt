@@ -34,5 +34,6 @@ class Board private constructor() {
 
     fun moveToVerification(card: Card) {
         verificationColumn.add(card)
+        inProgressColumn.remove(card)
     }
 }
