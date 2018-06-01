@@ -79,4 +79,32 @@ class BoardTests {
 
         assertFalse(board.inProgressColumn.cards().contains(card))
     }
+
+    @Test
+    fun shouldReturnTrue_afterCardWasMovedToDone_whenCheckDoneColumnForContainingThisCard() {
+        val board = Create
+                .board()
+                .withTodoCapacity(10)
+                .please()
+        val card = board.moveToProgress()
+        board.moveToVerification(card!!)
+
+        board.moveToDone(card)
+
+        assertTrue(board.doneColumn.cards().contains(card))
+    }
+
+    @Test
+    fun shouldReturnFalse_afterCardWasMovedToDone_whenCheckVerificationColumnForContainingThisCard() {
+        val board = Create
+                .board()
+                .withTodoCapacity(10)
+                .please()
+        val card = board.moveToProgress()
+        board.moveToVerification(card!!)
+
+        board.moveToDone(card)
+
+        assertFalse(board.verificationColumn.cards().contains(card))
+    }
 }

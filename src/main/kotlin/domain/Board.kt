@@ -36,4 +36,9 @@ class Board private constructor() {
         verificationColumn.add(card)
         inProgressColumn.remove(card)
     }
+
+    fun moveToDone(card: Card) {
+        doneColumn.add(card)
+        verificationColumn.remove(card)
+    }
 }
