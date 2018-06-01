@@ -20,4 +20,11 @@ class Board private constructor() {
         val cards = Array<Card>(cardsCount, { index: Int -> Card() } )
         cards.forEach { card -> todoColumn.add(card) }
     }
+
+    fun moveToProgress(): Card {
+        val card = todoColumn.getCards().first()
+        inProgressColumn.add(card)
+
+        return card
+    }
 }

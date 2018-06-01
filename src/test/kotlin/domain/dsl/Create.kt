@@ -1,5 +1,6 @@
 package domain.dsl
 
+import domain.Board
 import domain.Card
 import domain.Column
 import domain.Player
@@ -8,17 +9,10 @@ class Create {
 
     companion object {
 
-        fun card(): CardBuilder {
-            return CardBuilder()
-        }
-
-        fun player(): PlayerBuilder {
-            return PlayerBuilder()
-        }
-
-        fun column(): ColumnBuilder {
-            return ColumnBuilder()
-        }
+        fun card() = CardBuilder()
+        fun player() = PlayerBuilder()
+        fun column() = ColumnBuilder()
+        fun board() = BoardBuilder()
     }
 }
 
@@ -31,18 +25,14 @@ class CardBuilder {
         return this
     }
 
-    fun please(): Card {
-        return card
-    }
+    fun please() = card
 }
 
 class PlayerBuilder {
 
     private val player = Player()
 
-    fun please(): Player {
-        return player
-    }
+    fun please() = player
 }
 
 class ColumnBuilder {
@@ -54,7 +44,17 @@ class ColumnBuilder {
         return this
     }
 
-    fun please(): Column {
-        return column
+    fun please() = column
+}
+
+class BoardBuilder {
+
+    lateinit var board: Board
+
+    fun withTodoCapacity(capacity: Int): BoardBuilder {
+        board = Board.init(capacity)
+        return this
     }
+
+    fun please() = board
 }
