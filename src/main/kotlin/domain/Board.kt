@@ -21,9 +21,13 @@ class Board private constructor() {
         cards.forEach { card -> todoColumn.add(card) }
     }
 
-    fun moveToProgress(): Card {
-        val card = todoColumn.getCards().first()
-        inProgressColumn.add(card)
+    fun moveToProgress(): Card? {
+        val card = todoColumn.cards().firstOrNull()
+
+        if (card != null) {
+            inProgressColumn.add(card)
+            todoColumn.remove(card)
+        }
 
         return card
     }

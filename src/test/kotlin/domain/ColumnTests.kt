@@ -75,6 +75,6 @@ class ColumnTests {
         column.add(secondCard)
         column.add(thirdCard)
 
-        assertEquals(column.getCards(), listOf(firstCard, secondCard, thirdCard))
+        assertEquals(column.cards(), listOf(firstCard, secondCard, thirdCard))
     }
 }

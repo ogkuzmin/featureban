@@ -18,7 +18,11 @@ class Column {
         return false
     }
 
-    fun getCards(): List<Card> {
+    fun cards(): List<Card> {
         return cards
+    }
+
+    fun remove(card: Card) {
+        cards.remove(card)
     }
 }
