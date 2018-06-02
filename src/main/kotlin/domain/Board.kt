@@ -15,6 +15,7 @@ class Board private constructor() {
     val inProgressColumn = Column()
     val verificationColumn = Column()
     val doneColumn = Column()
+    private val players: MutableList<Player> = ArrayList()
 
     private fun generateCardsForTodoColumns(cardsCount: Int) {
         val cards = Array<Card>(cardsCount, { index: Int -> Card() } )
@@ -40,5 +41,13 @@ class Board private constructor() {
     fun moveToDone(card: Card) {
         doneColumn.add(card)
         verificationColumn.remove(card)
+    }
+
+    fun addPlayer(player: Player) {
+        players.add(player)
+    }
+
+    fun players(): List<Player> {
+        return players
     }
 }

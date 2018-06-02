@@ -49,12 +49,12 @@ class ColumnBuilder {
 
 class BoardBuilder {
 
-    lateinit var board: Board
+    private var capacity = 1
 
     fun withTodoCapacity(capacity: Int): BoardBuilder {
-        board = Board.init(capacity)
+        this.capacity = capacity
         return this
     }
 
-    fun please() = board
+    fun please() = Board.init(capacity)
 }

@@ -107,4 +107,19 @@ class BoardTests {
 
         assertFalse(board.verificationColumn.cards().contains(card))
     }
+
+    @Test
+    fun shouldReturnListOfPlayers_thatContainedPreviouslyAddedPlayerToBoard_whenGetPlayers() {
+        val board = Create
+                .board()
+                .withTodoCapacity(10)
+                .please()
+        val player = Create
+                .player()
+                .please()
+
+        board.addPlayer(player)
+
+        assertTrue(board.players().contains(player))
+    }
 }
