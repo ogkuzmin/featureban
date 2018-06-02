@@ -1,3 +1,8 @@
 package domain
 
-class Player
+class Player {
+
+    fun play(coin: Coin): Boolean {
+        return CoinSides.TAILS == coin.flip()
+    }
+}
