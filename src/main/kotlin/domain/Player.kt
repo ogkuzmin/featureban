@@ -17,6 +17,9 @@ class Player {
             if (!board.verificationColumn.isLimitSpent()) {
                 val card = board.inProgressColumn.cards().first { card -> card.isOwnedBy(this) }
                 board.moveToVerification(card)
+            } else {
+                val card = board.inProgressColumn.cards().first { it.isOwnedBy(this) && it.isBlocked }
+                card.isBlocked = false
             }
         }
     }

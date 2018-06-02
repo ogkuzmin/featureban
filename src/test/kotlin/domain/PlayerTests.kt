@@ -50,6 +50,31 @@ class PlayerTests {
         verify(board).moveToVerification(card)
     }
 
+    @Test
+    fun shouldUnblockCardInInProgressColumn_cardThatOwnedByHimIfHeWinsAndWipLimitOfVerificationColumnIsSpent_whenPlayOnBoard() {
+        val limitWip = 2
+        val coin = getCoinWithAlways(CoinSide.TAILS)
+        val player = Create
+                .player()
+                .please()
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .withWipLimit(limitWip)
+                .please())
+        val cardFirst = board.moveToProgress()
+        board.moveToVerification(cardFirst!!)
+        val cardSecond = board.moveToProgress()
+        board.moveToVerification(cardSecond!!)
+        val thirdCard = board.moveToProgress()
+        thirdCard!!.owner = player
+        thirdCard.isBlocked = true
+
+        player.playOn(board, coin)
+
+        assertFalse(thirdCard.isBlocked)
+    }
+
     private fun getCoinWithAlways(coinSide: CoinSide): Coin {
         val coin = Mockito.spy(Coin())
         `when`(coin.flip()).thenReturn(coinSide)
