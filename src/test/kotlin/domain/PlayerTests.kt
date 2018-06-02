@@ -1,7 +1,6 @@
-package domain.dsl
+package domain
 
-import domain.Coin
-import domain.CoinSides
+import domain.dsl.Create
 import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
 import org.junit.Test
@@ -12,8 +11,7 @@ class PlayerTests {
 
     @Test
     fun shouldReturnFalse_ifCoinFlippedWithHeads_whenPlay() {
-        val player = Create
-                .player()
+        val player = Create.player()
                 .please()
 
         val coin = Mockito.spy(Coin())
@@ -24,8 +22,7 @@ class PlayerTests {
 
     @Test
     fun shouldReturnTrue_ifCoinFlippedWithTails_whenPlay() {
-        val player = Create
-                .player()
+        val player = Create.player()
                 .please()
 
         val coin = Mockito.spy(Coin())
