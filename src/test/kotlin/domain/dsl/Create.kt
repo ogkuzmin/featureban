@@ -60,11 +60,17 @@ class ColumnBuilder {
 class BoardBuilder {
 
     private var capacity = 1
+    private var wipLimit = Column.UNDEFINED_WIP_LIMIT
 
     fun withTodoCapacity(capacity: Int): BoardBuilder {
         this.capacity = capacity
         return this
     }
 
-    fun please() = Board.init(capacity)
+    fun withWipLimit(limit: Int): BoardBuilder {
+        wipLimit = limit
+        return this
+    }
+
+    fun please() = Board.init(capacity).also { board -> board.setWipLimit(wipLimit) }
 }

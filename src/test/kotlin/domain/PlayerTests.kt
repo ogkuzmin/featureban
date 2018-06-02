@@ -6,6 +6,7 @@ import junit.framework.Assert.assertTrue
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 
 class PlayerTests {
 
@@ -14,8 +15,7 @@ class PlayerTests {
         val player = Create.player()
                 .please()
 
-        val coin = Mockito.spy(Coin())
-        `when`(coin.flip()).thenReturn(CoinSides.HEADS)
+        val coin = getCoinWithAlways(CoinSide.HEADS)
 
         assertFalse(player.play(coin))
     }
@@ -25,9 +25,34 @@ class PlayerTests {
         val player = Create.player()
                 .please()
 
-        val coin = Mockito.spy(Coin())
-        `when`(coin.flip()).thenReturn(CoinSides.TAILS)
+        val coin = getCoinWithAlways(CoinSide.TAILS)
 
         assertTrue(player.play(coin))
+    }
+
+    @Test
+    fun shouldMoveToVerificationColumn_cardThatOwnedByHimIfHeWinsAndWipLimitOfVerificationColumnIsNotSpent_whenPlayOnBoard() {
+        val limitWip = 3
+        val coin = getCoinWithAlways(CoinSide.TAILS)
+        val player = Create
+                .player()
+                .please()
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .withWipLimit(limitWip)
+                .please())
+        val card = board.moveToProgress()
+        card!!.owner = player
+
+        player.playOn(board, coin)
+
+        verify(board).moveToVerification(card)
+    }
+
+    private fun getCoinWithAlways(coinSide: CoinSide): Coin {
+        val coin = Mockito.spy(Coin())
+        `when`(coin.flip()).thenReturn(coinSide)
+        return coin
     }
 }

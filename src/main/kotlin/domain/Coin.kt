@@ -2,7 +2,7 @@ package domain
 
 import java.util.*
 
-enum class CoinSides {
+enum class CoinSide {
     HEADS, TAILS
 }
 
@@ -10,7 +10,7 @@ open class Coin {
 
     private val random = Random()
 
-    open fun flip(): CoinSides {
-        return if (random.nextBoolean()) CoinSides.HEADS else CoinSides.TAILS
+    open fun flip(): CoinSide {
+        return if (random.nextBoolean()) CoinSide.HEADS else CoinSide.TAILS
     }
 }

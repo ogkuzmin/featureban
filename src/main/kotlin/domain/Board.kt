@@ -1,6 +1,6 @@
 package domain
 
-class Board private constructor() {
+open class Board private constructor() {
 
     companion object {
 
@@ -22,7 +22,7 @@ class Board private constructor() {
         cards.forEach { card -> todoColumn.add(card) }
     }
 
-    fun moveToProgress(): Card? {
+    open fun moveToProgress(): Card? {
         val card = todoColumn.cards().firstOrNull()
 
         if (card != null) {
@@ -33,21 +33,26 @@ class Board private constructor() {
         return card
     }
 
-    fun moveToVerification(card: Card) {
+    open fun moveToVerification(card: Card) {
         verificationColumn.add(card)
         inProgressColumn.remove(card)
     }
 
-    fun moveToDone(card: Card) {
+    open fun moveToDone(card: Card) {
         doneColumn.add(card)
         verificationColumn.remove(card)
     }
 
-    fun addPlayer(player: Player) {
+    open fun addPlayer(player: Player) {
         players.add(player)
     }
 
-    fun players(): List<Player> {
+    open fun players(): List<Player> {
         return players
+    }
+
+    open fun setWipLimit(wipLimit: Int) {
+        inProgressColumn.setWip(wipLimit)
+        verificationColumn.setWip(wipLimit)
     }
 }
