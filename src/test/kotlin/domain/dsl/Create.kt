@@ -44,6 +44,16 @@ class ColumnBuilder {
         return this
     }
 
+    fun withCards(cards: List<Card>): ColumnBuilder {
+        cards.forEach { column.add(it) }
+        return this
+    }
+
+    fun withWipLimit(limit: Int): ColumnBuilder {
+        column.setWip(limit)
+        return this
+    }
+
     fun please() = column
 }
 

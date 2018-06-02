@@ -77,4 +77,20 @@ class ColumnTests {
 
         assertEquals(column.cards(), listOf(firstCard, secondCard, thirdCard))
     }
+
+    @Test(expected = IllegalStateException::class)
+    fun shouldThrowException_ifColumnHasCardsCountEqualsToItsWipLimit_whenAddCard() {
+        val limitWip = 3
+        val cards = ArrayList<Card>()
+        for (i in 0..limitWip) {
+            cards.add(Card())
+        }
+        val column = Create
+                .column()
+                .withWipLimit(limitWip)
+                .withCards(cards)
+                .please()
+
+        column.add(Card())
+    }
 }

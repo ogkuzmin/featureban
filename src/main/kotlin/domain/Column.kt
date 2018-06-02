@@ -2,11 +2,27 @@ package domain
 
 class Column {
 
+    companion object {
+        private const val UNDEFINED_WIP_LIMIT = -1
+    }
+
+    private var limitWip: Int = UNDEFINED_WIP_LIMIT
+
     private val cards: MutableList<Card> = ArrayList()
 
     fun add(card: Card) {
-        cards.add(card)
+        if (!isLimitSpent()) {
+            cards.add(card)
+        } else {
+            throw IllegalStateException("WIP limit is spent!")
+        }
     }
+
+    fun setWip(limitWip: Int) {
+        this.limitWip = limitWip
+    }
+
+    private fun isLimitSpent() = cards.size == limitWip
 
     fun containsCardOf(player: Player): Boolean {
         cards.forEach { card ->
