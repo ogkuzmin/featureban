@@ -233,6 +233,26 @@ class PlayerTests {
         assertTrue(assertionCard.isBlocked)
     }
 
+    @Test
+    fun shouldBlockCardInInProgressColumn_thatOwnedByHimIfHeLoseAndVerificationColumnDoesNotContainNonBlockedCardOfThisPlayer_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.HEADS)
+        val player = Create
+                .player()
+                .please()
+        val board = Create
+                .board()
+                .withTodoCapacity(10)
+                .please()
+        val firstCard = board.moveToProgress(player)
+        board.moveToVerification(firstCard!!)
+        firstCard.isBlocked = true
+        val assertionCard = board.moveToProgress(player)
+
+        player.playOn(board, coin)
+
+        assertTrue(assertionCard!!.isBlocked)
+    }
+
     private fun getCoinWithAlways(coinSide: CoinSide): Coin {
         val coin = Mockito.spy(Coin())
         `when`(coin.flip()).thenReturn(coinSide)

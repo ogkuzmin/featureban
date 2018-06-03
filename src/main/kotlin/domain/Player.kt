@@ -32,7 +32,11 @@ class Player {
         val nonBlockedCardFormVerificationColumn = board.verificationColumn.getNonBlockedCardOf(this)
         if (nonBlockedCardFormVerificationColumn != null) {
             nonBlockedCardFormVerificationColumn.isBlocked = true
+        } else {
+            val nonBlockedCardFromInProgressColumn = board.inProgressColumn.getNonBlockedCardOf(this)
+            nonBlockedCardFromInProgressColumn?.isBlocked = true
         }
+
     }
 
     private fun playWinIn(column: Column, forNonBlockedAction: (Card) -> Unit, forBlockedAction: (Card) -> Unit) {
