@@ -17,24 +17,30 @@ class Player {
             val card = board.verificationColumn.getNonBlockedCardOf(this)
             if (card != null) {
                 board.moveToDone(card)
-            }
-
-        } else if (board.inProgressColumn.containsCardOf(this)) {
-            if (!board.verificationColumn.isLimitSpent()) {
-                val card = board.inProgressColumn.getNonBlockedCardOf(this)
-                if (card != null) {
-                    board.moveToVerification(card)
-                }
             } else {
-                val card = board.inProgressColumn.cards().first { it.isOwnedBy(this) && it.isBlocked }
-                card.isBlocked = false
+                val blockedCard = board.verificationColumn.getBlockedCardOf(this)
+                blockedCard?.isBlocked = false
+            }
+        } else if (board.inProgressColumn.containsCardOf(this)) {
+            val card = board.inProgressColumn.getNonBlockedCardOf(this)
+            if (card != null) {
+                board.moveToVerification(card)
+            } else {
+                val blockedCard = board.inProgressColumn.getBlockedCardOf(this)
+                blockedCard?.isBlocked = false
             }
         }
     }
 
     private fun Column.getNonBlockedCardOf(player: Player): Card? {
-        return this.cards().first { card ->
+        return this.cards().firstOrNull { card ->
             card.isOwnedBy(player) && !card.isBlocked
+        }
+    }
+
+    private fun Column.getBlockedCardOf(player: Player): Card? {
+        return this.cards().firstOrNull { card ->
+            card.isOwnedBy(player) && card.isBlocked
         }
     }
 }
