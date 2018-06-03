@@ -1,12 +1,12 @@
 package domain
 
-class Player {
+open class Player {
 
-    fun play(coin: Coin): Boolean {
+    open fun play(coin: Coin): Boolean {
         return CoinSide.TAILS == coin.flip()
     }
 
-    fun playOn(board: Board, coin: Coin) {
+    open fun playOn(board: Board, coin: Coin) {
         if (play(coin)) {
             playWhenWin(board)
         } else {

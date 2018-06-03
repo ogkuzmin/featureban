@@ -1,9 +1,6 @@
 package domain.dsl
 
-import domain.Board
-import domain.Card
-import domain.Column
-import domain.Player
+import domain.*
 
 class Create {
 
@@ -13,6 +10,7 @@ class Create {
         fun player() = PlayerBuilder()
         fun column() = ColumnBuilder()
         fun board() = BoardBuilder()
+        fun game() = GameBuilder()
     }
 }
 
@@ -73,4 +71,34 @@ class BoardBuilder {
     }
 
     fun please() = Board.init(capacity).also { board -> board.setWipLimit(wipLimit) }
+}
+
+class GameBuilder {
+
+    private var countOfRounds = 1
+    private var capacity = 1
+    private var wipLimit = Column.UNDEFINED_WIP_LIMIT
+    private var coin: Coin? = null
+
+    fun withBoardCapacity(capacity: Int): GameBuilder {
+        this.capacity = capacity
+        return this
+    }
+
+    fun withWipLimit(wipLimit: Int): GameBuilder {
+        this.wipLimit = wipLimit
+        return this
+    }
+
+    fun withCountOfRounds(countOfRounds: Int): GameBuilder {
+        this.countOfRounds = countOfRounds
+        return this
+    }
+
+    fun withCoin(coin: Coin): GameBuilder {
+        this.coin = coin
+        return this
+    }
+
+    fun please() = Game(countOfRounds, capacity, wipLimit, coin?: Coin())
 }
