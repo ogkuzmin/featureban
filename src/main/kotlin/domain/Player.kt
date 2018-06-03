@@ -14,21 +14,9 @@ class Player {
 
     private fun playWhenWin(board: Board) {
         if (board.verificationColumn.containsCardOf(this)) {
-            val card = board.verificationColumn.getNonBlockedCardOf(this)
-            if (card != null) {
-                board.moveToDone(card)
-            } else {
-                val blockedCard = board.verificationColumn.getBlockedCardOf(this)
-                blockedCard?.isBlocked = false
-            }
+            playWinIn(board.verificationColumn, { card -> board.moveToDone(card) }, { card -> card.isBlocked = false })
         } else if (board.inProgressColumn.containsCardOf(this)) {
-            val card = board.inProgressColumn.getNonBlockedCardOf(this)
-            if (card != null) {
-                board.moveToVerification(card)
-            } else {
-                val blockedCard = board.inProgressColumn.getBlockedCardOf(this)
-                blockedCard?.isBlocked = false
-            }
+            playWinIn(board.inProgressColumn, { card -> board.moveToVerification(card) }, { card -> card.isBlocked = false })
         } else {
             if (!board.inProgressColumn.isLimitSpent()) {
                 board.moveToProgress(this)
@@ -38,23 +26,31 @@ class Player {
         }
     }
 
+    private fun playWinIn(column: Column, forNonBlockedAction: (Card) -> Unit, forBlockedAction: (Card) -> Unit) {
+        val card = column.getNonBlockedCardOf(this)
+        if (card != null) {
+            forNonBlockedAction(card)
+        } else {
+            val blockedCard = column.getBlockedCardOf(this)
+            forBlockedAction(blockedCard!!)
+        }
+    }
+
     private fun helpOtherPlayerOn(board: Board) {
         if (!board.verificationColumn.isEmpty()) {
-            val nonBlockedCard = board.verificationColumn.cards().firstOrNull { card -> !card.isBlocked }
-            if (nonBlockedCard != null) {
-                board.moveToDone(nonBlockedCard)
-            } else {
-                val blockedCard = board.verificationColumn.cards().first{ card -> card.isBlocked }
-                blockedCard.isBlocked = false
-            }
+            helpOtherPlayerIn(board.verificationColumn, { card -> board.moveToDone(card) }, { card -> card.isBlocked = false })
         } else if (!board.inProgressColumn.isEmpty()) {
-            val cardInProgressNonBlocked = board.inProgressColumn.cards().firstOrNull { card -> !card.isBlocked }
-            if (cardInProgressNonBlocked != null) {
-                board.moveToVerification(cardInProgressNonBlocked)
-            } else {
-                val cardInProgressBlocked = board.inProgressColumn.cards().first { card -> card.isBlocked }
-                cardInProgressBlocked.isBlocked = false
-            }
+            helpOtherPlayerIn(board.inProgressColumn, { card -> board.moveToVerification(card) }, { card -> card.isBlocked = false })
+        }
+    }
+
+    private fun helpOtherPlayerIn(column: Column, forNonBlockedAction: (Card) -> Unit, forBlockedAction: (Card) -> Unit) {
+        val nonBlockedCard = column.cards().firstOrNull { card -> !card.isBlocked }
+        if (nonBlockedCard != null) {
+            forNonBlockedAction(nonBlockedCard)
+        } else {
+            val blockedCard = column.cards().first { card -> card.isBlocked }
+            forBlockedAction(blockedCard)
         }
     }
 
