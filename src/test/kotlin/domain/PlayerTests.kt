@@ -146,7 +146,7 @@ class PlayerTests {
     }
 
     @Test
-    fun shouldMoveToVerificationColumn_cardOfAnotherPlayerIfHeWinsAndThereIsNotAnyHisCardInVerificationOrInProgressColumnsAndInVerificationColumnIsEmptyWipLimitOfInProgressColumnIsSpent_whenPlayOnBoard() {
+    fun shouldMoveToVerificationColumn_cardOfAnotherPlayerIfHeWinsAndThereIsNotAnyHisCardInVerificationOrInProgressColumnsAndInVerificationColumnIsEmptyAndWipLimitOfInProgressColumnIsSpent_whenPlayOnBoard() {
         val coin = getCoinWithAlways(CoinSide.TAILS)
         val firstPlayer = Create
                 .player()
@@ -165,6 +165,54 @@ class PlayerTests {
         secondPlayer.playOn(board, coin)
 
         verify(board).moveToVerification(assertionCard!!)
+    }
+
+    @Test
+    fun shouldUnblockCardInVerificationColumn_ofAnotherPlayerIfHeWinsAndThereIsNotAnyHisCardInVerificationOrInProgressColumnsAndVerificationColumnContainsBlockedCardOfAnotherPlayerAndWipLimitOfInProgressColumnIsSpent_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.TAILS)
+        val firstPlayer = Create
+                .player()
+                .please()
+        val secondPlayer = Create
+                .player()
+                .please()
+        val wipLimit = 1
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .withWipLimit(wipLimit)
+                .please())
+        val assertionCard = board.moveToProgress(firstPlayer)
+        board.moveToVerification(assertionCard!!)
+        assertionCard.isBlocked = true
+        board.moveToProgress(firstPlayer)
+
+        secondPlayer.playOn(board, coin)
+
+        assertFalse(assertionCard.isBlocked)
+    }
+
+    @Test
+    fun shouldUnblockCardInProgressColumn_ofAnotherPlayerIfHeWinsAndThereIsNotAnyHisCardInInProgressColumnAndInVerificationColumnIsEmptyAndWipLimitOfInProgressColumnIsSpent_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.TAILS)
+        val firstPlayer = Create
+                .player()
+                .please()
+        val secondPlayer = Create
+                .player()
+                .please()
+        val wipLimit = 1
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .withWipLimit(wipLimit)
+                .please())
+        val assertionCard = board.moveToProgress(firstPlayer)
+        assertionCard!!.isBlocked = true
+
+        secondPlayer.playOn(board, coin)
+
+        assertFalse(assertionCard.isBlocked)
     }
 
     private fun getCoinWithAlways(coinSide: CoinSide): Coin {

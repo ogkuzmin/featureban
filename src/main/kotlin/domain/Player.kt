@@ -39,13 +39,21 @@ class Player {
     }
 
     private fun helpOtherPlayerOn(board: Board) {
-        val card = board.verificationColumn.cards().firstOrNull()
-        if (card != null) {
-            board.moveToDone(card)
-        } else {
-            val cardInProgress = board.inProgressColumn.cards().firstOrNull()
-            if (cardInProgress != null) {
-                board.moveToVerification(cardInProgress)
+        if (!board.verificationColumn.isEmpty()) {
+            val nonBlockedCard = board.verificationColumn.cards().firstOrNull { card -> !card.isBlocked }
+            if (nonBlockedCard != null) {
+                board.moveToDone(nonBlockedCard)
+            } else {
+                val blockedCard = board.verificationColumn.cards().first{ card -> card.isBlocked }
+                blockedCard.isBlocked = false
+            }
+        } else if (!board.inProgressColumn.isEmpty()) {
+            val cardInProgressNonBlocked = board.inProgressColumn.cards().firstOrNull { card -> !card.isBlocked }
+            if (cardInProgressNonBlocked != null) {
+                board.moveToVerification(cardInProgressNonBlocked)
+            } else {
+                val cardInProgressBlocked = board.inProgressColumn.cards().first { card -> card.isBlocked }
+                cardInProgressBlocked.isBlocked = false
             }
         }
     }

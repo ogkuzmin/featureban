@@ -41,4 +41,8 @@ class Column {
     fun remove(card: Card) {
         cards.remove(card)
     }
+
+    fun isEmpty(): Boolean {
+        return cards.size == 0
+    }
 }
