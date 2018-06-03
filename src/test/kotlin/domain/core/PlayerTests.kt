@@ -1,5 +1,7 @@
-package domain
+package domain.core
 
+import domain.core.Coin
+import domain.core.CoinSide
 import domain.dsl.Create
 import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue

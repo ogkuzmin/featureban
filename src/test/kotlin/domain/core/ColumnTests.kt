@@ -1,5 +1,6 @@
-package domain
+package domain.core
 
+import domain.core.Card
 import domain.dsl.Create
 import junit.framework.Assert.*
 import org.junit.Test

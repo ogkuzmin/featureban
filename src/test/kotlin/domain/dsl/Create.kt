@@ -1,6 +1,6 @@
 package domain.dsl
 
-import domain.*
+import domain.core.*
 
 class Create {
 
@@ -100,5 +100,5 @@ class GameBuilder {
         return this
     }
 
-    fun please() = Game(countOfRounds, capacity, wipLimit, coin?: Coin())
+    fun please() = Game(countOfRounds, capacity, wipLimit, coin ?: Coin())
 }

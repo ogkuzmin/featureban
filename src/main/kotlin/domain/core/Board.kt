@@ -1,4 +1,4 @@
-package domain
+package domain.core
 
 open class Board private constructor() {
 

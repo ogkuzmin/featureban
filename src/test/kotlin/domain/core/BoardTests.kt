@@ -1,4 +1,4 @@
-package domain
+package domain.core
 
 import domain.dsl.Create
 import junit.framework.Assert.*
