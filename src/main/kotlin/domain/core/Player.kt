@@ -15,10 +15,30 @@ open class Player {
     }
 
     private fun playWhenWin(board: Board) {
-        if (board.verificationColumn.containsCardOf(this)) {
-            playWinIn(board.verificationColumn, { card -> board.moveToDone(card) }, { card -> card.isBlocked = false })
-        } else if (board.inProgressColumn.containsCardOf(this)) {
-            playWinIn(board.inProgressColumn, { card -> board.moveToVerification(card) }, { card -> card.isBlocked = false })
+        if (board.verificationColumn.containsCardOf(this) &&
+            playWinIn(board.verificationColumn, { card ->
+                if (!board.doneColumn.isLimitSpent()) {
+                    board.moveToDone(card)
+                    true
+                } else {
+                    false
+                }
+            }, { card ->
+                card.isBlocked = false; true
+            })) {
+            return
+        } else if (board.inProgressColumn.containsCardOf(this) &&
+            playWinIn(board.inProgressColumn, { card ->
+                if (!board.verificationColumn.isLimitSpent()) {
+                    board.moveToVerification(card)
+                    true
+                } else {
+                    false
+                }
+            }, { card ->
+                card.isBlocked = false; true
+            })) {
+            return
         } else {
             if (!board.inProgressColumn.isLimitSpent()) {
                 board.moveToProgress(this)
@@ -42,13 +62,13 @@ open class Player {
         }
     }
 
-    private fun playWinIn(column: Column, forNonBlockedAction: (Card) -> Unit, forBlockedAction: (Card) -> Unit) {
+    private fun playWinIn(column: Column, forNonBlockedAction: (Card) -> Boolean, forBlockedAction: (Card) -> Boolean): Boolean {
         val card = column.getNonBlockedCardOf(this)
         if (card != null) {
-            forNonBlockedAction(card)
+            return forNonBlockedAction(card)
         } else {
             val blockedCard = column.getBlockedCardOf(this)
-            forBlockedAction(blockedCard!!)
+            return forBlockedAction(blockedCard!!)
         }
     }
 

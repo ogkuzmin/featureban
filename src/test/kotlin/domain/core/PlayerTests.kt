@@ -293,6 +293,30 @@ class PlayerTests {
         verify(board, never()).moveToProgress(player)
     }
 
+    @Test
+    fun shouldMoveToDoneNonBlockedCard_ofAnotherPlayerIfHeWinsAndVerificationColumnDoesNotContainCardOfThisPlayerAndItsLimitIsSpentAndHeWins_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.TAILS)
+        val wipLimit = 1
+        val firstPlayer = Create
+                .player()
+                .please()
+        val secondPlayer = Create
+                .player()
+                .please()
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .withWipLimit(wipLimit)
+                .please())
+        val assertionCard = board.moveToProgress(firstPlayer)
+        board.moveToVerification(assertionCard!!)
+        val anotherCard = board.moveToProgress(secondPlayer)
+
+        secondPlayer.playOn(board, coin)
+
+        verify(board).moveToDone(assertionCard)
+    }
+
     private fun getCoinWithAlways(coinSide: CoinSide): Coin {
         val coin = Mockito.spy(Coin())
         `when`(coin.flip()).thenReturn(coinSide)
