@@ -24,10 +24,27 @@ class PlayerTests {
     fun shouldReturnTrue_ifCoinFlippedWithTails_whenPlay() {
         val player = Create.player()
                 .please()
-
         val coin = getCoinWithAlways(CoinSide.TAILS)
 
         assertTrue(player.play(coin))
+    }
+
+    @Test
+    fun shouldMoveToDoneColumn_cardThatOwnedByHimAndItIsNotBlockedFromVerificationColumnIfHeWins_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.TAILS)
+        val player = Create
+                .player()
+                .please()
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .please())
+        val card = board.moveToProgress(player)
+        board.moveToVerification(card!!)
+
+        player.playOn(board, coin)
+
+        verify(board).moveToDone(card)
     }
 
     @Test
@@ -42,12 +59,11 @@ class PlayerTests {
                 .withTodoCapacity(10)
                 .withWipLimit(limitWip)
                 .please())
-        val card = board.moveToProgress()
-        card!!.owner = player
+        val card = board.moveToProgress(player)
 
         player.playOn(board, coin)
 
-        verify(board).moveToVerification(card)
+        verify(board).moveToVerification(card!!)
     }
 
     @Test
@@ -62,13 +78,12 @@ class PlayerTests {
                 .withTodoCapacity(10)
                 .withWipLimit(limitWip)
                 .please())
-        val cardFirst = board.moveToProgress()
+        val cardFirst = board.moveToProgress(player)
         board.moveToVerification(cardFirst!!)
-        val cardSecond = board.moveToProgress()
+        val cardSecond = board.moveToProgress(player)
         board.moveToVerification(cardSecond!!)
-        val thirdCard = board.moveToProgress()
-        thirdCard!!.owner = player
-        thirdCard.isBlocked = true
+        val thirdCard = board.moveToProgress(player)
+        thirdCard!!.isBlocked = true
 
         player.playOn(board, coin)
 

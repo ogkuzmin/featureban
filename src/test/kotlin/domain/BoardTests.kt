@@ -21,7 +21,7 @@ class BoardTests {
                 .withTodoCapacity(10)
                 .please()
 
-        val todoCard = board.moveToProgress()
+        val todoCard = board.moveToProgress(Player())
 
         assertTrue(board.inProgressColumn.cards().contains(todoCard))
     }
@@ -33,7 +33,7 @@ class BoardTests {
                 .withTodoCapacity(10)
                 .please()
 
-        val todoCard = board.moveToProgress()
+        val todoCard = board.moveToProgress(Player())
 
         assertFalse(board.todoColumn.cards().contains(todoCard))
     }
@@ -47,9 +47,9 @@ class BoardTests {
                 .please()
 
         for (i in 0..capacity) {
-            board.moveToProgress()
+            board.moveToProgress(Player())
         }
-        val nullResult = board.moveToProgress()
+        val nullResult = board.moveToProgress(Player())
 
         assertNull(nullResult)
     }
@@ -60,7 +60,7 @@ class BoardTests {
                 .board()
                 .withTodoCapacity(10)
                 .please()
-        val card = board.moveToProgress()
+        val card = board.moveToProgress(Player())
 
         board.moveToVerification(card!!)
 
@@ -73,7 +73,7 @@ class BoardTests {
                 .board()
                 .withTodoCapacity(10)
                 .please()
-        val card = board.moveToProgress()
+        val card = board.moveToProgress(Player())
 
         board.moveToVerification(card!!)
 
@@ -86,7 +86,7 @@ class BoardTests {
                 .board()
                 .withTodoCapacity(10)
                 .please()
-        val card = board.moveToProgress()
+        val card = board.moveToProgress(Player())
         board.moveToVerification(card!!)
 
         board.moveToDone(card)
@@ -100,7 +100,7 @@ class BoardTests {
                 .board()
                 .withTodoCapacity(10)
                 .please()
-        val card = board.moveToProgress()
+        val card = board.moveToProgress(Player())
         board.moveToVerification(card!!)
 
         board.moveToDone(card)

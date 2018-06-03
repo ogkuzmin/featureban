@@ -13,7 +13,15 @@ class Player {
     }
 
     private fun playWhenWin(board: Board) {
-        if (board.inProgressColumn.containsCardOf(this)){
+        if (board.verificationColumn.containsCardOf(this)) {
+            val card = board.verificationColumn.cards().firstOrNull { card ->
+                card.isOwnedBy(this) && !card.isBlocked
+            }
+            if (card != null) {
+                board.moveToDone(card)
+            }
+
+        } else if (board.inProgressColumn.containsCardOf(this)) {
             if (!board.verificationColumn.isLimitSpent()) {
                 val card = board.inProgressColumn.cards().first { card -> card.isOwnedBy(this) }
                 board.moveToVerification(card)

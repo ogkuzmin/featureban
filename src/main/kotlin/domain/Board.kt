@@ -22,10 +22,11 @@ open class Board private constructor() {
         cards.forEach { card -> todoColumn.add(card) }
     }
 
-    open fun moveToProgress(): Card? {
+    open fun moveToProgress(player: Player): Card? {
         val card = todoColumn.cards().firstOrNull()
 
         if (card != null) {
+            card.owner = player
             inProgressColumn.add(card)
             todoColumn.remove(card)
         }
