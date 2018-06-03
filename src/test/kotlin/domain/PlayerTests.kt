@@ -48,7 +48,7 @@ class PlayerTests {
     }
 
     @Test
-    fun shouldMoveToVerificationColumn_cardThatOwnedByHimIfHeWinsAndWipLimitOfVerificationColumnIsNotSpent_whenPlayOnBoard() {
+    fun shouldMoveToVerificationColumn_cardThatOwnedByHimIfHeWinsAndWipLimitOfVerificationColumnIsNotSpentAndCardIsNotBlocked_whenPlayOnBoard() {
         val limitWip = 3
         val coin = getCoinWithAlways(CoinSide.TAILS)
         val player = Create

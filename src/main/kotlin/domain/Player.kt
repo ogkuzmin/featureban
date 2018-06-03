@@ -23,8 +23,12 @@ class Player {
 
         } else if (board.inProgressColumn.containsCardOf(this)) {
             if (!board.verificationColumn.isLimitSpent()) {
-                val card = board.inProgressColumn.cards().first { card -> card.isOwnedBy(this) }
-                board.moveToVerification(card)
+                val card = board.inProgressColumn.cards().firstOrNull { card ->
+                    card.isOwnedBy(this) && !card.isBlocked
+                }
+                if (card != null) {
+                    board.moveToVerification(card)
+                }
             } else {
                 val card = board.inProgressColumn.cards().first { it.isOwnedBy(this) && it.isBlocked }
                 card.isBlocked = false
