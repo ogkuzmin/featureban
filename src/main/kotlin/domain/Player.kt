@@ -14,18 +14,14 @@ class Player {
 
     private fun playWhenWin(board: Board) {
         if (board.verificationColumn.containsCardOf(this)) {
-            val card = board.verificationColumn.cards().firstOrNull { card ->
-                card.isOwnedBy(this) && !card.isBlocked
-            }
+            val card = board.verificationColumn.getNonBlockedCardOf(this)
             if (card != null) {
                 board.moveToDone(card)
             }
 
         } else if (board.inProgressColumn.containsCardOf(this)) {
             if (!board.verificationColumn.isLimitSpent()) {
-                val card = board.inProgressColumn.cards().firstOrNull { card ->
-                    card.isOwnedBy(this) && !card.isBlocked
-                }
+                val card = board.inProgressColumn.getNonBlockedCardOf(this)
                 if (card != null) {
                     board.moveToVerification(card)
                 }
@@ -33,6 +29,12 @@ class Player {
                 val card = board.inProgressColumn.cards().first { it.isOwnedBy(this) && it.isBlocked }
                 card.isBlocked = false
             }
+        }
+    }
+
+    private fun Column.getNonBlockedCardOf(player: Player): Card? {
+        return this.cards().first { card ->
+            card.isOwnedBy(player) && !card.isBlocked
         }
     }
 }
