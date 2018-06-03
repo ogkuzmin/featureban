@@ -9,6 +9,8 @@ class Player {
     fun playOn(board: Board, coin: Coin) {
         if (play(coin)) {
             playWhenWin(board)
+        } else {
+            playWhenLose(board)
         }
     }
 
@@ -23,6 +25,13 @@ class Player {
             } else {
                 helpOtherPlayerOn(board)
             }
+        }
+    }
+
+    private fun playWhenLose(board: Board) {
+        val nonBlockedCardFormVerificationColumn = board.verificationColumn.getNonBlockedCardOf(this)
+        if (nonBlockedCardFormVerificationColumn != null) {
+            nonBlockedCardFormVerificationColumn.isBlocked = true
         }
     }
 

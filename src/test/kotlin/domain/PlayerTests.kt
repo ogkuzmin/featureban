@@ -215,6 +215,24 @@ class PlayerTests {
         assertFalse(assertionCard.isBlocked)
     }
 
+    @Test
+    fun shouldBlockCardInVerificationColumn_thatOwnedByHimIfHeLose_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.HEADS)
+        val player = Create
+                .player()
+                .please()
+        val board = Create
+                .board()
+                .withTodoCapacity(10)
+                .please()
+        val assertionCard = board.moveToProgress(player)
+        board.moveToVerification(assertionCard!!)
+
+        player.playOn(board, coin)
+
+        assertTrue(assertionCard.isBlocked)
+    }
+
     private fun getCoinWithAlways(coinSide: CoinSide): Coin {
         val coin = Mockito.spy(Coin())
         `when`(coin.flip()).thenReturn(coinSide)
