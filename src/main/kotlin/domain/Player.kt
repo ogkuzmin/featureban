@@ -30,7 +30,14 @@ class Player {
                 blockedCard?.isBlocked = false
             }
         } else {
-            board.moveToProgress(this)
+            if (!board.inProgressColumn.isLimitSpent()) {
+                board.moveToProgress(this)
+            } else {
+                val card = board.verificationColumn.cards().firstOrNull()
+                if (card != null) {
+                    board.moveToDone(card)
+                }
+            }
         }
     }
 
