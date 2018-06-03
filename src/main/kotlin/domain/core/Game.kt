@@ -27,4 +27,6 @@ class Game {
             }
         }
     }
+
+    fun getDoneCount(): Int = board.doneColumn.cards().size
 }
