@@ -145,6 +145,28 @@ class PlayerTests {
         verify(board).moveToDone(assertionCard)
     }
 
+    @Test
+    fun shouldMoveToVerificationColumn_cardOfAnotherPlayerIfHeWinsAndThereIsNotAnyHisCardInVerificationOrInProgressColumnsAndInVerificationColumnIsEmptyWipLimitOfInProgressColumnIsSpent_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.TAILS)
+        val firstPlayer = Create
+                .player()
+                .please()
+        val secondPlayer = Create
+                .player()
+                .please()
+        val wipLimit = 1
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .withWipLimit(wipLimit)
+                .please())
+        val assertionCard = board.moveToProgress(firstPlayer)
+
+        secondPlayer.playOn(board, coin)
+
+        verify(board).moveToVerification(assertionCard!!)
+    }
+
     private fun getCoinWithAlways(coinSide: CoinSide): Coin {
         val coin = Mockito.spy(Coin())
         `when`(coin.flip()).thenReturn(coinSide)

@@ -33,10 +33,19 @@ class Player {
             if (!board.inProgressColumn.isLimitSpent()) {
                 board.moveToProgress(this)
             } else {
-                val card = board.verificationColumn.cards().firstOrNull()
-                if (card != null) {
-                    board.moveToDone(card)
-                }
+                helpOtherPlayerOn(board)
+            }
+        }
+    }
+
+    private fun helpOtherPlayerOn(board: Board) {
+        val card = board.verificationColumn.cards().firstOrNull()
+        if (card != null) {
+            board.moveToDone(card)
+        } else {
+            val cardInProgress = board.inProgressColumn.cards().firstOrNull()
+            if (cardInProgress != null) {
+                board.moveToVerification(cardInProgress)
             }
         }
     }
