@@ -29,6 +29,8 @@ class Player {
                 val blockedCard = board.inProgressColumn.getBlockedCardOf(this)
                 blockedCard?.isBlocked = false
             }
+        } else {
+            board.moveToProgress(this)
         }
     }
 

@@ -105,6 +105,22 @@ class PlayerTests {
         assertFalse(card.isBlocked)
     }
 
+    @Test
+    fun shouldMoveNewCardToInProgressColumn_ifHeWinsAndThereIsNotAnyHisCardInVerificationOrInProgressColumns_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.TAILS)
+        val player = Create
+                .player()
+                .please()
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .please())
+
+        player.playOn(board, coin)
+
+        verify(board).moveToProgress(player)
+    }
+
     private fun getCoinWithAlways(coinSide: CoinSide): Coin {
         val coin = Mockito.spy(Coin())
         `when`(coin.flip()).thenReturn(coinSide)
