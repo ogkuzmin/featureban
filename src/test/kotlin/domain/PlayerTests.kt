@@ -5,8 +5,7 @@ import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
 import org.junit.Test
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 
 class PlayerTests {
 
@@ -251,6 +250,45 @@ class PlayerTests {
         player.playOn(board, coin)
 
         assertTrue(assertionCard!!.isBlocked)
+    }
+
+    @Test
+    fun shouldMoveToInProgressNewCard_ifWipLimitOfInProgressColumnIsNotSpentAndHeLose_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.HEADS)
+        val player = Create
+                .player()
+                .please()
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .please())
+
+        player.playOn(board, coin)
+
+        verify(board).moveToProgress(player)
+    }
+
+    @Test
+    fun shouldNotMoveToInProgressNewCard_ifWipLimitOfInProgressColumnIsSpentAndHeLose_whenPlayOnBoard() {
+        val coin = getCoinWithAlways(CoinSide.HEADS)
+        val wipLimit = 2
+        val player = Create
+                .player()
+                .please()
+        val secondPlayer = Create
+                .player()
+                .please()
+        val board = Mockito.spy(Create
+                .board()
+                .withTodoCapacity(10)
+                .withWipLimit(wipLimit)
+                .please())
+        board.moveToProgress(secondPlayer)
+        board.moveToProgress(secondPlayer)
+
+        player.playOn(board, coin)
+
+        verify(board, never()).moveToProgress(player)
     }
 
     private fun getCoinWithAlways(coinSide: CoinSide): Coin {

@@ -37,6 +37,9 @@ class Player {
             nonBlockedCardFromInProgressColumn?.isBlocked = true
         }
 
+        if (!board.inProgressColumn.isLimitSpent()) {
+            board.moveToProgress(this)
+        }
     }
 
     private fun playWinIn(column: Column, forNonBlockedAction: (Card) -> Unit, forBlockedAction: (Card) -> Unit) {
