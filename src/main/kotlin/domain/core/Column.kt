@@ -14,7 +14,7 @@ class Column {
         if (!isLimitSpent()) {
             cards.add(card)
         } else {
-            throw IllegalStateException("WIP limit is spent!")
+            throw IllegalStateException("WIP limit is spent! Wip Limit is $limitWip")
         }
     }
 
